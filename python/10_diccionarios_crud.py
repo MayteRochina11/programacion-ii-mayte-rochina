@@ -47,6 +47,6 @@ droide["activo"]=False
 print(f"droides : {droides}")
 
 # delete
-eliminado = droide.pop(2)
+eliminado = droides.pop(2)
 print(f"droides : {droides}")
 
