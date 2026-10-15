@@ -68,4 +68,5 @@ jedi["fuerza"] = 150
 print(jedi)
 
 for clave, valor in jedi_activo.items():
-    print(f"{clave}: {valor}")
+    print(f"{clave} - {valor}")
+    
