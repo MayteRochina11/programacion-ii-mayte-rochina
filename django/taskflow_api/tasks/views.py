@@ -43,9 +43,25 @@ def destination(request, titulo, nombre, cargo):
         f"Bienvenido: {titulo} {nombre}, su cargo es: {cargo}"
     )
 
+def base_triangulo(request, base, altura):
+    """Registro usuario"""
+    resultado =base*altura/2
+    return HttpResponse(
+        f"El àrea de un triagulo es: {resultado}")
+
 def my_first_template(request):
     contexto = {
         "titulo": "TaskFlow",
         "mensaje": "Organiza tus proyectos y tareas en un solo lugar",
     }
     return render(request, "tasks/my-first-template.html", contexto)
+
+def leads_like(request):
+    contexto = {
+        "titulo": "Tecnico",
+        "nombre":"Mayte",
+        "apellido": "Rochina",
+    }
+    return render(request,
+                  "leads/leads-like.html", contexto
+                  )
