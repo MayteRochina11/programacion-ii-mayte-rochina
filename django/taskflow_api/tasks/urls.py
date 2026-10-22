@@ -11,5 +11,8 @@ urlpatterns = [
     path("saludo/<str:nombre>/", views.greeting, name="saludo"),
     path("destination/<str:titulo>/<str:nombre>/<str:cargo>/",
          views.destination, name="destination"),
-    path("my-first-template", views.my_first_template, name="my-first-template.html")
+    path("base_triangulo/<int:base>/<int:altura>/",
+         views.base_triangulo, name="base_triangulo"),
+    path("my-first-template", views.my_first_template, name="my-first-template.html"),
+    path("leads-like", views.leads_like, name="leads-like")
 ]
