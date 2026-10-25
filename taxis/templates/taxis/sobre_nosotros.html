@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros - {{ titulo }}</title>
+    <style>
+        /* Estilos CSS para que se vea bonito */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            color: #ffcc00; /* Amarillo tipo taxi */
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #555;
+        }
+        .btn-volver {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        .btn-volver:hover {
+            background-color: #ffcc00;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ titulo }}</h1>
+        <p>{{ mensaje }}</p>
+        <p>En <strong>TaxisFast</strong> nos dedicamos a conectar pasajeros con los mejores conductores de la ciudad. Nuestro objetivo es que llegues a tu destino de forma rápida, segura y al mejor precio.</p>
+        
+        <a href="{% url 'taxis:home' %}" class="btn-volver">Volver al Inicio</a>
+    </div>
+</body>
+</html>
