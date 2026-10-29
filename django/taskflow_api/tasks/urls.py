@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 app_name = "tasks"   # namespace de la app — ver nota más abajo
 
 urlpatterns = [
@@ -14,5 +15,10 @@ urlpatterns = [
     path("base_triangulo/<int:base>/<int:altura>/",
          views.base_triangulo, name="base_triangulo"),
     path("my-first-template", views.my_first_template, name="my-first-template.html"),
-    path("leads-like", views.leads_like, name="leads-like")
+    path("leads-like", views.leads_like, name="leads-like"),
+    path("projects/lista", 
+                         views.project_lista,
+                         name="project-lista"),
+     #"path("tasks/new/", views.task_create, name="task_create"),"
+     path("projects/new/", views.project_create, name="project_create"),
 ]
