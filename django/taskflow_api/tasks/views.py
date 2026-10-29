@@ -1,7 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.http import HttpResponse
+
+from tasks.forms import TaskForm
+from tasks.models import Project
+
+
 
 def home(request):
     """Vista de bienvenida de app tasks."""
@@ -65,3 +70,24 @@ def leads_like(request):
     return render(request,
                   "leads/leads-like.html", contexto
                   )
+
+
+def project_lista(request):
+    contexto = {
+        "titulo": "TaskFlow",
+        "mensaje": "Organiza tus proyectos y tareas en un solo lugar",
+        "projects": Project.objects.order_by("-created_at"),
+    }
+    return render(request, "tasks/home.html", contexto)
+
+
+def project_create(request):
+    if request.method == "POST":
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            project = form.save()
+            return redirect("tasks:projects-list")
+    else:
+        form = ProjectForm()
+
+    return render(request, "project/project_form.html", {"form": form, "modo": "crear"})
