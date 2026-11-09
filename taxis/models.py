@@ -22,6 +22,12 @@ class TaxisFast(models.Model):
         EN_SERVICIO = "EN_SERVICIO", "En servicio"
         FUERA_DE_SERVICIO = "FUERA_DE_SERVICIO", "Fuera de servicio"
 
+<<<<<<< HEAD
+    # ForeignKey: cada taxi pertenece a UNA línea.
+    # Una línea puede tener MUCHOS taxis — relación muchos a uno.
+    # SET_NULL: si se borra la línea, el taxi no desaparece (queda sin línea).
+=======
+>>>>>>> origin/main
     linea = models.ForeignKey(
         Linea,
         on_delete=models.SET_NULL,
