@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.http import HttpResponse
 
-from tasks.forms import TaskForm
+from tasks.forms import TaskForm, ProjectForm
 from tasks.models import Project
 
 
@@ -90,4 +90,4 @@ def project_create(request):
     else:
         form = ProjectForm()
 
-    return render(request, "project/project_form.html", {"form": form, "modo": "crear"})
+    return render(request, "projects/project_form.html", {"form": form, "modo": "crear"})
