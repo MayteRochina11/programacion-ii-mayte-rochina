@@ -1,4 +1,6 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
+from catalogo.models.categoria import Categoria
 from catalogo.models.libro import Libro
 from catalogo.forms.libro_form import LibroForm
 from django.contrib.auth.decorators import login_required, permission_required
@@ -12,11 +14,14 @@ def libro_list(request):
     if pista:
         libros = libros.filter(
             Q(titulo__icontains=pista) |
-            Q(categoria__nombre__icontains=pista) |
             Q(autor__icontains=pista) |
+            Q(categoria__nombre__icontains=pista)
         )
+        
+
     if categoria_id:
         libros = libros.filter(categoria_id=categoria_id)
+    
     categorias = Categoria.objects.all()
     contexto = {
         'libros': libros,

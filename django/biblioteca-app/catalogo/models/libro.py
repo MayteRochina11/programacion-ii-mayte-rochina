@@ -7,6 +7,7 @@ class Libro(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     fecha_publicacion = models.DateField()
     isbn = models.CharField(max_length=13, unique=True)
+    autores = models.ManyToManyField('Autor', related_name='libros', blank=True)
 
     def __str__(self):
         return self.titulo

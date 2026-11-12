@@ -37,7 +37,7 @@
         </p>
         <p>
             <label for="categoria">categoría:</label>
-            <select id="categoria" name="categoria">
+            <select id="categoria_id" name="categoria_id">
                 <option value="">Seleccionar todas las categorias</option>
                 {% for categoria in categorias %}
                     <option value="{{ categoria.id }}" {% if categoria.id == categoria_id %}selected{% endif %}>
@@ -46,9 +46,9 @@
                 {% endfor %}
             </select>
         </p>
-
+        <button type="submit">Buscar</button>
     </form>
-    <table>
+    <table border="1" cellpadding="8">
         <thead>
             <tr>
                 <th>Título</th>
@@ -59,29 +59,30 @@
         </thead>
         <tbody>
             {% for libro in libros %}
-            <tr>
-                <td>{{ libro.titulo }}</td>
-                <td>{{ libro.autor }}</td>
-                <td>{{ libro.fecha_publicacion }}</td>
-                <td>
-                    <a href="{% url 'update_libro' libro.pk %}">Editar</a>
-                    {% if perms.catalogo.delete_libro %}
-                        <a href="{% url 'delete_libro' libro.pk %}">Eliminar</a>
-                    {% endif %}
-                </td>
-            </tr>
+                <tr>
+                    <td>{{ libro.titulo }}</td>
+                    <td>{{ libro.autor }}</td>
+                    <td>{{ libro.fecha_publicacion }}</td>
+                    <td>
+                        <a href="{% url 'update_libro' libro.pk %}">Editar</a>
+                        {% if perms.catalogo.delete_libro %}
+                            <a href="{% url 'delete_libro' libro.pk %}">Eliminar</a>
+                        {% endif %}
+                    </td>
+                </tr>
             {% empty %}
-            <tr>
-                <td colspan="3">No hay libros disponibles.</td>
-            </tr>
+                <tr>
+                    <td colspan="4">No hay libros disponibles.</td>
+                </tr>
             {% endfor %}
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="3">
+                <td colspan="4">
                     Total de libros: {{ libros|length }}
                 </td>
             </tr>
         </tfoot>
+    </table>
 </body>
 </html>
