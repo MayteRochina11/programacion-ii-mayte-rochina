@@ -1,0 +1,17 @@
+{% extends "taxis/base.html" %}
+{% block title %}Ingresar{% endblock %}
+{% block content %}
+<h1>Ingresar</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {% include "taxis/includes/form_campos.html" %}
+
+    <button type="submit">Ingresar</button>
+</form>
+
+<p>¿No tienes cuenta?
+    <a href="{% url 'registro_pasajero' %}">Regístrate como pasajero</a> o
+    <a href="{% url 'registro_chofer' %}">como chofer</a>.
+</p>
+{% endblock %}

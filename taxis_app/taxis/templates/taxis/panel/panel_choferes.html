@@ -1,0 +1,39 @@
+{% extends "taxis/base.html" %}
+{% block content %}
+<h1>{{ titulo }}</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Chofer</th>
+            <th>Usuario</th>
+            <th>Teléfono</th>
+            <th>Taxi</th>
+            <th>Placa</th>
+            <th>Línea</th>
+            <th>Estado</th>
+            <th>Viajes completados</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for chofer in choferes %}
+            <tr>
+                <td>{{ chofer.nombre_completo }}</td>
+                <td>{{ chofer.username }}</td>
+                <td>{{ chofer.telefono|default:"—" }}</td>
+                <td>{{ chofer.vehiculo.taxi|default:"—" }}</td>
+                <td>{{ chofer.vehiculo.taxi_placa|default:"—" }}</td>
+                <td>{{ chofer.vehiculo.linea|default:"Sin línea" }}</td>
+                <td>
+                    {% if chofer.vehiculo %}
+                        <span class="badge {{ chofer.vehiculo.estado }}">{{ chofer.vehiculo.get_estado_display }}</span>
+                    {% else %}—{% endif %}
+                </td>
+                <td>{{ chofer.viajes_completados }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="8">Aún no hay choferes registrados.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

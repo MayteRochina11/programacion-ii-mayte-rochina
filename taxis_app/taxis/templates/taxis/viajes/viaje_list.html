@@ -1,0 +1,45 @@
+{% extends "taxis/base.html" %}
+{% block content %}
+<h1>{{ titulo }}</h1>
+<p>{{ mensaje }}</p>
+
+<a href="{% url 'viaje_create' %}" class="btn">Pedir carrera</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th>Chofer</th>
+            <th>Taxi</th>
+            <th>Estado</th>
+            <th>Pedido</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for viaje in viajes %}
+            <tr>
+                <td>{{ viaje.origen }}</td>
+                <td>{{ viaje.destino }}</td>
+                <td>
+                    {% if viaje.chofer %}
+                        {{ viaje.chofer.nombre_completo }}
+                        {% if viaje.chofer.telefono %}<br><small>{{ viaje.chofer.telefono }}</small>{% endif %}
+                    {% else %}
+                        Esperando chofer…
+                    {% endif %}
+                </td>
+                <td>
+                    {% if viaje.taxi %}{{ viaje.taxi }} ({{ viaje.taxi.taxi_placa|default:"sin placa" }}){% else %}—{% endif %}
+                </td>
+                <td><span class="badge {{ viaje.estado }}">{{ viaje.get_estado_display }}</span></td>
+                <td>{{ viaje.created_at|date:"d/m/Y H:i" }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6">Aún no has pedido ninguna carrera.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "taxis/base.html" %}
+{% block content %}
+<h1>{{ titulo }}</h1>
+<p>{{ mensaje }}</p>
+
+<p>Pide tu carrera en segundos, o súmate como chofer y acepta las carreras que más te convengan.</p>
+
+<div class="acciones">
+    <a href="{% url 'ingresar' %}" class="btn">Ingresar</a>
+    <a href="{% url 'registro_pasajero' %}" class="btn">Registrarme como pasajero</a>
+    <a href="{% url 'registro_chofer' %}" class="btn">Registrarme como chofer</a>
+</div>
+{% endblock %}
