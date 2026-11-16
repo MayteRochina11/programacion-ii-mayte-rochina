@@ -1,0 +1,31 @@
+{% extends "taxis/base.html" %}
+{% block content %}
+<h1>{{ titulo }}</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Pasajero</th>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th>Chofer</th>
+            <th>Estado</th>
+            <th>Pedido</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for viaje in viajes %}
+            <tr>
+                <td>{{ viaje.pasajero.nombre_completo }}</td>
+                <td>{{ viaje.origen }}</td>
+                <td>{{ viaje.destino }}</td>
+                <td>{{ viaje.chofer.nombre_completo|default:"—" }}</td>
+                <td><span class="badge {{ viaje.estado }}">{{ viaje.get_estado_display }}</span></td>
+                <td>{{ viaje.created_at|date:"d/m/Y H:i" }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="6">No hay viajes registrados aún.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

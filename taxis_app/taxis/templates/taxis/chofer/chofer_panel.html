@@ -1,0 +1,98 @@
+{% extends "taxis/base.html" %}
+{% block content %}
+<h1>{{ titulo }}</h1>
+
+{% if not taxi %}
+    <p>No tienes un taxi registrado. Habla con el administrador.</p>
+{% else %}
+
+    <div class="destacado">
+        <strong>{{ taxi.taxi }}</strong> · Placa {{ taxi.taxi_placa|default:"—" }}
+        · Línea: {{ taxi.linea|default:"Sin línea" }}
+        · Tarifa: {{ taxi.taxi_tarifa|default:"—" }}<br>
+        Estado: <span class="badge {{ taxi.estado }}">{{ taxi.get_estado_display }}</span>
+
+        <div class="acciones" style="margin-top:10px;">
+            {% if taxi.estado != "EN_SERVICIO" %}
+                <form method="post" action="{% url 'chofer_disponibilidad' %}">
+                    {% csrf_token %}
+                    <button type="submit">
+                        {% if taxi.estado == "EN_BASE" %}Ponerme fuera de servicio{% else %}Ponerme disponible{% endif %}
+                    </button>
+                </form>
+            {% endif %}
+            <a href="{% url 'chofer_taxi_edit' %}" class="btn">Editar mi taxi y mi línea</a>
+        </div>
+    </div>
+
+    {% if viaje_actual %}
+        <h2>Tu carrera en curso</h2>
+        <div class="destacado">
+            <p><strong>Pasajero:</strong> {{ viaje_actual.pasajero.nombre_completo }}
+               · {{ viaje_actual.pasajero.telefono|default:"sin teléfono" }}</p>
+            <p><strong>Origen:</strong> {{ viaje_actual.origen }}<br>
+               <strong>Destino:</strong> {{ viaje_actual.destino }}</p>
+            <form method="post" action="{% url 'viaje_completar' viaje_actual.pk %}">
+                {% csrf_token %}
+                <button type="submit">Completar viaje</button>
+            </form>
+        </div>
+    {% elif taxi.estado == "EN_BASE" %}
+        <h2>Carreras disponibles</h2>
+        <p>Elige la que quieras aceptar.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pasajero</th>
+                    <th>Origen</th>
+                    <th>Destino</th>
+                    <th>Esperando</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for viaje in disponibles %}
+                    <tr>
+                        <td>{{ viaje.pasajero.nombre_completo }}</td>
+                        <td>{{ viaje.origen }}</td>
+                        <td>{{ viaje.destino }}</td>
+                        <td>{{ viaje.created_at|timesince }}</td>
+                        <td>
+                            <form method="post" action="{% url 'viaje_aceptar' viaje.pk %}">
+                                {% csrf_token %}
+                                <button type="submit">Aceptar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">No hay carreras pendientes por ahora. Vuelve a revisar en un momento.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Estás fuera de servicio. Ponte disponible para ver las carreras pendientes.</p>
+    {% endif %}
+
+    <h2>Tus últimas carreras completadas</h2>
+    <table>
+        <thead>
+            <tr><th>Pasajero</th><th>Origen</th><th>Destino</th><th>Fecha</th></tr>
+        </thead>
+        <tbody>
+            {% for viaje in historial %}
+                <tr>
+                    <td>{{ viaje.pasajero.nombre_completo }}</td>
+                    <td>{{ viaje.origen }}</td>
+                    <td>{{ viaje.destino }}</td>
+                    <td>{{ viaje.created_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4">Todavía no completas ninguna carrera.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "taxis/base.html" %}
+{% block content %}
+<h1>{{ titulo }}</h1>
+
+<h2>Usuarios</h2>
+<div class="tarjetas">
+    <div class="tarjeta"><strong>{{ total_choferes }}</strong> choferes · <a href="{% url 'panel_choferes' %}">ver</a></div>
+    <div class="tarjeta"><strong>{{ total_pasajeros }}</strong> pasajeros · <a href="{% url 'panel_pasajeros' %}">ver</a></div>
+    <div class="tarjeta"><strong>{{ total_lineas }}</strong> líneas · <a href="{% url 'linea_list' %}">ver</a></div>
+</div>
+
+<h2>Flota</h2>
+<div class="tarjetas">
+    <div class="tarjeta"><strong>{{ taxis_en_base }}</strong> disponibles</div>
+    <div class="tarjeta"><strong>{{ taxis_en_servicio }}</strong> en servicio</div>
+    <div class="tarjeta"><strong>{{ taxis_fuera }}</strong> fuera de servicio</div>
+</div>
+
+<h2>Viajes</h2>
+<div class="tarjetas">
+    <div class="tarjeta"><strong>{{ viajes_pendientes }}</strong> pendientes</div>
+    <div class="tarjeta"><strong>{{ viajes_asignados }}</strong> en curso</div>
+    <div class="tarjeta"><strong>{{ viajes_completados }}</strong> completados</div>
+</div>
+
+<a href="{% url 'panel_viajes' %}" class="btn">Ver todos los viajes</a>
+{% endblock %}

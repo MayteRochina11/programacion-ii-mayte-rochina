@@ -1,0 +1,29 @@
+{% extends "taxis/base.html" %}
+{% block content %}
+<h1>{{ titulo }}</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Pasajero</th>
+            <th>Usuario</th>
+            <th>Teléfono</th>
+            <th>Viajes pedidos</th>
+            <th>Registrado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pasajero in pasajeros %}
+            <tr>
+                <td>{{ pasajero.nombre_completo }}</td>
+                <td>{{ pasajero.username }}</td>
+                <td>{{ pasajero.telefono|default:"—" }}</td>
+                <td>{{ pasajero.total_viajes }}</td>
+                <td>{{ pasajero.date_joined|date:"d/m/Y" }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5">Aún no hay pasajeros registrados.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

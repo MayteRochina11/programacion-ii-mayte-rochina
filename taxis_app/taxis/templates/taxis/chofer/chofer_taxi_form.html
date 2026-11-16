@@ -1,0 +1,14 @@
+{% extends "taxis/base.html" %}
+{% block title %}{{ encabezado }}{% endblock %}
+{% block content %}
+<h1>{{ encabezado }}</h1>
+<p>Aquí puedes cambiar tu línea y los datos de tu taxi.</p>
+
+<form method="post">
+    {% csrf_token %}
+    {% include "taxis/includes/form_campos.html" %}
+
+    <button type="submit">Guardar</button>
+    <a href="{% url 'chofer_panel' %}">Cancelar</a>
+</form>
+{% endblock %}

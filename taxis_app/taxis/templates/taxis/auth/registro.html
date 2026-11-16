@@ -1,0 +1,16 @@
+{% extends "taxis/base.html" %}
+{% block title %}{{ encabezado }}{% endblock %}
+{% block content %}
+<h1>{{ encabezado }}</h1>
+<p>{{ subtitulo }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    {% include "taxis/includes/form_campos.html" %}
+
+    <button type="submit">Crear cuenta</button>
+    <a href="{% url 'inicio' %}">Cancelar</a>
+</form>
+
+<p>¿Ya tienes cuenta? <a href="{% url 'ingresar' %}">Ingresa aquí</a>.</p>
+{% endblock %}
