@@ -21,7 +21,7 @@
                 <td>{{ chofer.nombre_completo }}</td>
                 <td>{{ chofer.username }}</td>
                 <td>{{ chofer.telefono|default:"—" }}</td>
-                <td>{{ chofer.vehiculo.taxi|default:"—" }}</td>
+                <td>{% if chofer.vehiculo %}<a href="{{ chofer.vehiculo.get_absolute_url }}">{{ chofer.vehiculo.taxi }}</a>{% else %}—{% endif %}</td>
                 <td>{{ chofer.vehiculo.taxi_placa|default:"—" }}</td>
                 <td>{{ chofer.vehiculo.linea|default:"Sin línea" }}</td>
                 <td>

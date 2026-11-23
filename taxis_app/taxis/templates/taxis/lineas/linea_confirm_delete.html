@@ -1,0 +1,14 @@
+{% extends "taxis/base.html" %}
+{% block title %}Eliminar línea{% endblock %}
+{% block content %}
+<h1>Eliminar línea</h1>
+
+<p>¿Seguro que quieres eliminar la línea <strong>{{ linea.nombre }}</strong>?</p>
+<p>Los taxis de esta línea no se borran: quedarán "Sin línea".</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn-peligro">Sí, eliminar</button>
+    <a href="{{ linea.get_absolute_url }}">Cancelar</a>
+</form>
+{% endblock %}

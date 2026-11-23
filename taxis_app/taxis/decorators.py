@@ -6,11 +6,6 @@ from django.shortcuts import redirect
 
 
 def rol_requerido(*roles):
-    """Deja pasar solo a usuarios con sesión iniciada Y con alguno de los roles dados.
-
-    - Sin sesión: lo manda a iniciar sesión (y vuelve a la página que quería).
-    - Con otro rol: aviso y lo regresa a su propio panel.
-    """
 
     def decorador(vista):
         @wraps(vista)

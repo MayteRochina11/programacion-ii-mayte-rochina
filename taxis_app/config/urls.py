@@ -16,4 +16,6 @@ urlpatterns = [
     path('taxis/', include('taxis.urls.chofer_urls')),
     path('taxis/', include('taxis.urls.panel_urls')),
     path('taxis/', include('taxis.urls.linea_urls')),
+    path('taxis/', include('taxis.urls.zona_urls')),
+    path('taxis/', include('taxis.urls.taxi_urls')),
 ]

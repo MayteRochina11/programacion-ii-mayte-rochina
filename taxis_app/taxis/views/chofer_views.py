@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
@@ -8,6 +9,7 @@ from taxis.forms.taxi_form import TaxiForm
 from taxis.models import TaxisFast, Usuario, Viaje
 
 
+@login_required
 @rol_requerido(Usuario.Rol.CHOFER)
 def chofer_panel(request):
     """Panel del chofer: su taxi, su carrera en curso y las carreras que puede aceptar."""
@@ -21,6 +23,7 @@ def chofer_panel(request):
         viajes = Viaje.objects.select_related("pasajero")
         viaje_actual = viajes.filter(taxi=taxi, estado=Viaje.Estado.ASIGNADO).first()
         if taxi.estado == TaxisFast.Estado.EN_BASE:
+            # Las más antiguas primero: llevan más tiempo esperando.
             disponibles = viajes.filter(estado=Viaje.Estado.PENDIENTE).order_by("created_at")
         historial = viajes.filter(taxi=taxi, estado=Viaje.Estado.COMPLETADO)[:10]
 
@@ -33,6 +36,7 @@ def chofer_panel(request):
     })
 
 
+@login_required
 @rol_requerido(Usuario.Rol.CHOFER)
 @require_POST
 def chofer_disponibilidad(request):
@@ -53,6 +57,7 @@ def chofer_disponibilidad(request):
     return redirect("chofer_panel")
 
 
+@login_required
 @rol_requerido(Usuario.Rol.CHOFER)
 def chofer_taxi_edit(request):
     """El chofer cambia su línea y los datos de SU taxi (nunca el de otro)."""

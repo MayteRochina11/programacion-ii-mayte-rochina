@@ -1,0 +1,32 @@
+{% extends "taxis/base.html" %}
+{% block title %}Carrera{% endblock %}
+{% block content %}
+<h1>Carrera: {{ viaje.origen }} → {{ viaje.destino }}</h1>
+
+<div class="detalle">
+    <p><strong>Estado:</strong> <span class="badge {{ viaje.estado }}">{{ viaje.get_estado_display }}</span></p>
+    <p><strong>Pedida:</strong> {{ viaje.created_at|date:"d/m/Y H:i" }}</p>
+    <p><strong>Pasajero:</strong> {{ viaje.pasajero.nombre_completo }}
+        {% if ver_tel_pasajero and viaje.pasajero.telefono %}· {{ viaje.pasajero.telefono }}{% endif %}
+    </p>
+    <p><strong>Chofer:</strong>
+        {% if viaje.taxi %}
+            {{ viaje.taxi.chofer.nombre_completo }}
+            {% if ver_tel_chofer and viaje.taxi.chofer.telefono %}· {{ viaje.taxi.chofer.telefono }}{% endif %}
+        {% else %}
+            Esperando chofer…
+        {% endif %}
+    </p>
+    {% if viaje.taxi %}
+        <p><strong>Taxi:</strong>
+            <a href="{{ viaje.taxi.get_absolute_url }}">{{ viaje.taxi.taxi }}</a>
+            (placa {{ viaje.taxi.taxi_placa|default:"—" }})
+            {% if viaje.taxi.linea %}· línea <a href="{{ viaje.taxi.linea.get_absolute_url }}">{{ viaje.taxi.linea.nombre }}</a>{% endif %}
+        </p>
+    {% endif %}
+</div>
+
+<div class="acciones">
+    <a href="{% url 'inicio' %}" class="btn">Volver</a>
+</div>
+{% endblock %}

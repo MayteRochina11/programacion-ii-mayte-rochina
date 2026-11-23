@@ -1,0 +1,46 @@
+{% extends "taxis/base.html" %}
+{% block title %}{{ taxi.taxi }}{% endblock %}
+{% block content %}
+<h1>Taxi: {{ taxi.taxi }}</h1>
+
+<div class="detalle">
+    <p><strong>Placa:</strong> {{ taxi.taxi_placa|default:"—" }}</p>
+    <p><strong>Chofer:</strong> {{ taxi.chofer.nombre_completo }}</p>
+    <p><strong>Tarifa:</strong> {% if taxi.taxi_tarifa %}${{ taxi.taxi_tarifa }}{% else %}—{% endif %}</p>
+    <p><strong>Línea:</strong>
+        {% if taxi.linea %}<a href="{{ taxi.linea.get_absolute_url }}">{{ taxi.linea.nombre }}</a>{% else %}Sin línea{% endif %}
+    </p>
+    <p><strong>Estado:</strong> <span class="badge {{ taxi.estado }}">{{ taxi.get_estado_display }}</span></p>
+    <p><strong>Registrado:</strong> {{ taxi.taxi_fecha|date:"d/m/Y" }}</p>
+    <p><strong>Viajes completados:</strong> {{ viajes_completados }}</p>
+</div>
+
+{% if es_dueno or user.es_admin %}
+    <h2>Últimas carreras</h2>
+    <table>
+        <thead>
+            <tr><th>Pasajero</th><th>Origen</th><th>Destino</th><th>Estado</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% for viaje in viajes %}
+                <tr>
+                    <td>{{ viaje.pasajero.nombre_completo }}</td>
+                    <td>{{ viaje.origen }}</td>
+                    <td>{{ viaje.destino }}</td>
+                    <td><span class="badge {{ viaje.estado }}">{{ viaje.get_estado_display }}</span></td>
+                    <td><a href="{{ viaje.get_absolute_url }}">Ver</a></td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5">Este taxi todavía no tiene carreras.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+<div class="acciones">
+    <a href="{% url 'taxi_list' %}" class="btn">Volver a la flota</a>
+    {% if es_dueno %}
+        <a href="{% url 'chofer_taxi_edit' %}" class="btn">Editar mi taxi</a>
+    {% endif %}
+</div>
+{% endblock %}

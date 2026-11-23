@@ -1,0 +1,14 @@
+{% extends "taxis/base.html" %}
+{% block title %}Eliminar zona{% endblock %}
+{% block content %}
+<h1>Eliminar zona</h1>
+
+<p>¿Seguro que quieres eliminar la zona <strong>{{ zona.nombre }}</strong>?</p>
+<p>Las líneas que la cubren no se borran: solo dejan de cubrirla.</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn-peligro">Sí, eliminar</button>
+    <a href="{{ zona.get_absolute_url }}">Cancelar</a>
+</form>
+{% endblock %}

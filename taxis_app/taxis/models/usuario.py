@@ -2,11 +2,12 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
+from django.urls import reverse
 
 
 class UsuarioManager(UserManager):
     def create_superuser(self, username, email=None, password=None, **extra_fields):
-
+        # Lo que se crea con "createsuperuser" es siempre EL administrador.
         if self.filter(rol=Usuario.Rol.ADMIN).exists():
             raise ValidationError("Ya existe un administrador. Solo puede haber uno.")
         extra_fields["rol"] = Usuario.Rol.ADMIN
@@ -29,8 +30,9 @@ class Usuario(AbstractUser):
     class Meta:
         verbose_name = "usuario"
         verbose_name_plural = "usuarios"
+        ordering = ["username"]
         constraints = [
-
+            # Solo puede existir UN usuario con rol ADMIN (lo garantiza la base de datos).
             models.UniqueConstraint(
                 fields=["rol"],
                 condition=Q(rol="ADMIN"),
@@ -54,6 +56,10 @@ class Usuario(AbstractUser):
     @property
     def nombre_completo(self):
         return self.get_full_name() or self.username
+
+    def get_absolute_url(self):
+        # "inicio" lleva a cada usuario a su propio panel según su rol.
+        return reverse("inicio")
 
     def __str__(self):
         return self.nombre_completo

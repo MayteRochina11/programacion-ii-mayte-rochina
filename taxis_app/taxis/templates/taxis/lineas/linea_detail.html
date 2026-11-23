@@ -1,0 +1,40 @@
+{% extends "taxis/base.html" %}
+{% block title %}{{ linea.nombre }}{% endblock %}
+{% block content %}
+<h1>Línea: {{ linea.nombre }}</h1>
+
+<div class="detalle">
+    <p><strong>Zona principal:</strong> {{ linea.zona|default:"—" }}</p>
+    <p><strong>Descripción:</strong> {{ linea.descripcion|default:"Sin descripción disponible." }}</p>
+    <p><strong>Creada:</strong> {{ linea.created_at|date:"d/m/Y" }}</p>
+</div>
+
+<h2>Zonas que cubre</h2>
+<ul>
+    {% for zona in linea.zonas.all %}
+        <li><a href="{{ zona.get_absolute_url }}">{{ zona.nombre }}</a></li>
+    {% empty %}
+        <li>Esta línea todavía no cubre ninguna zona.</li>
+    {% endfor %}
+</ul>
+
+<h2>Taxis de la línea</h2>
+<ul>
+    {% for taxi in taxis %}
+        <li>
+            <a href="{{ taxi.get_absolute_url }}">{{ taxi.taxi }}</a>
+            (placa {{ taxi.taxi_placa|default:"—" }}, chofer {{ taxi.chofer.nombre_completo }})
+        </li>
+    {% empty %}
+        <li>No hay taxis en esta línea.</li>
+    {% endfor %}
+</ul>
+
+<div class="acciones">
+    <a href="{% url 'linea_list' %}" class="btn">Volver a líneas</a>
+    {% if user.es_admin %}
+        <a href="{% url 'linea_update' linea.pk %}" class="btn">Editar</a>
+        <a href="{% url 'linea_delete' linea.pk %}" class="btn btn-peligro">Eliminar</a>
+    {% endif %}
+</div>
+{% endblock %}
