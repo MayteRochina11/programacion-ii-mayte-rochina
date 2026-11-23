@@ -1,0 +1,40 @@
+{% extends "taxis/base.html" %}
+{% block content %}
+<h1>{{ titulo }}</h1>
+<p>{{ mensaje }}</p>
+
+{% if user.es_admin %}
+    <a href="{% url 'zona_create' %}" class="btn">Nueva zona</a>
+{% endif %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Zona</th>
+            <th>Descripción</th>
+            <th>Líneas que la cubren</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for zona in zonas %}
+            <tr>
+                <td><a href="{{ zona.get_absolute_url }}">{{ zona.nombre }}</a></td>
+                <td>{{ zona.descripcion|default:"—" }}</td>
+                <td>{{ zona.total_lineas }}</td>
+                <td>
+                    <a href="{{ zona.get_absolute_url }}">Ver</a>
+                    {% if user.es_admin %}
+                        · <a href="{% url 'zona_update' zona.pk %}">Editar</a>
+                        · <a href="{% url 'zona_delete' zona.pk %}">Eliminar</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4">No hay zonas registradas aún.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

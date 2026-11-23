@@ -1,0 +1,39 @@
+{% extends "taxis/base.html" %}
+{% block title %}{{ zona.nombre }}{% endblock %}
+{% block content %}
+<h1>Zona: {{ zona.nombre }}</h1>
+
+<div class="detalle">
+    <p><strong>Descripción:</strong> {{ zona.descripcion|default:"Sin descripción disponible." }}</p>
+    <p><strong>Creada:</strong> {{ zona.created_at|date:"d/m/Y" }}</p>
+</div>
+
+<h2>Líneas que cubren esta zona</h2>
+<ul>
+    {% for linea in lineas %}
+        <li><a href="{{ linea.get_absolute_url }}">{{ linea.nombre }}</a></li>
+    {% empty %}
+        <li>Ninguna línea cubre esta zona todavía.</li>
+    {% endfor %}
+</ul>
+
+<h2>Taxis que operan aquí</h2>
+<ul>
+    {% for taxi in taxis %}
+        <li>
+            <a href="{{ taxi.get_absolute_url }}">{{ taxi.taxi }}</a>
+            (línea {{ taxi.linea.nombre }})
+        </li>
+    {% empty %}
+        <li>No hay taxis en las líneas de esta zona.</li>
+    {% endfor %}
+</ul>
+
+<div class="acciones">
+    <a href="{% url 'zona_list' %}" class="btn">Volver a zonas</a>
+    {% if user.es_admin %}
+        <a href="{% url 'zona_update' zona.pk %}" class="btn">Editar</a>
+        <a href="{% url 'zona_delete' zona.pk %}" class="btn btn-peligro">Eliminar</a>
+    {% endif %}
+</div>
+{% endblock %}

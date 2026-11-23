@@ -1,10 +1,12 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.shortcuts import render
 
 from taxis.decorators import rol_requerido
-from taxis.models import Linea, TaxisFast, Usuario, Viaje
+from taxis.models import Linea, TaxisFast, Usuario, Viaje, Zona
 
 
+@login_required
 @rol_requerido(Usuario.Rol.ADMIN)
 def panel_admin(request):
     """Resumen general para el administrador."""
@@ -13,6 +15,7 @@ def panel_admin(request):
         "total_choferes": Usuario.objects.filter(rol=Usuario.Rol.CHOFER).count(),
         "total_pasajeros": Usuario.objects.filter(rol=Usuario.Rol.PASAJERO).count(),
         "total_lineas": Linea.objects.count(),
+        "total_zonas": Zona.objects.count(),
         "taxis_en_base": TaxisFast.objects.filter(estado=TaxisFast.Estado.EN_BASE).count(),
         "taxis_en_servicio": TaxisFast.objects.filter(estado=TaxisFast.Estado.EN_SERVICIO).count(),
         "taxis_fuera": TaxisFast.objects.filter(estado=TaxisFast.Estado.FUERA_DE_SERVICIO).count(),
@@ -23,6 +26,7 @@ def panel_admin(request):
     return render(request, "taxis/panel/panel_admin.html", contexto)
 
 
+@login_required
 @rol_requerido(Usuario.Rol.ADMIN)
 def panel_choferes(request):
     choferes = (
@@ -42,6 +46,7 @@ def panel_choferes(request):
     })
 
 
+@login_required
 @rol_requerido(Usuario.Rol.ADMIN)
 def panel_pasajeros(request):
     pasajeros = (
@@ -55,6 +60,7 @@ def panel_pasajeros(request):
     })
 
 
+@login_required
 @rol_requerido(Usuario.Rol.ADMIN)
 def panel_viajes(request):
     return render(request, "taxis/panel/panel_viajes.html", {

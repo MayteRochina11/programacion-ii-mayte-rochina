@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 
 from taxis.models import Usuario
 
-# A dónde va cada rol al entrar.
+
 PANEL_POR_ROL = {
     Usuario.Rol.PASAJERO: "viaje_list",
     Usuario.Rol.CHOFER: "chofer_panel",
@@ -11,7 +11,7 @@ PANEL_POR_ROL = {
 
 
 def inicio(request):
-    """Sin sesión: portada. Con sesión: te lleva al panel de tu rol."""
+
     if request.user.is_authenticated:
         return redirect(PANEL_POR_ROL[request.user.rol])
     contexto = {

@@ -9,7 +9,7 @@
     <div class="destacado">
         <strong>{{ taxi.taxi }}</strong> · Placa {{ taxi.taxi_placa|default:"—" }}
         · Línea: {{ taxi.linea|default:"Sin línea" }}
-        · Tarifa: {{ taxi.taxi_tarifa|default:"—" }}<br>
+        · Tarifa: {% if taxi.taxi_tarifa %}${{ taxi.taxi_tarifa }}{% else %}—{% endif %}<br>
         Estado: <span class="badge {{ taxi.estado }}">{{ taxi.get_estado_display }}</span>
 
         <div class="acciones" style="margin-top:10px;">
@@ -58,7 +58,8 @@
                         <td>{{ viaje.destino }}</td>
                         <td>{{ viaje.created_at|timesince }}</td>
                         <td>
-                            <form method="post" action="{% url 'viaje_aceptar' viaje.pk %}">
+                            <a href="{{ viaje.get_absolute_url }}">Ver</a>
+                            <form method="post" action="{% url 'viaje_aceptar' viaje.pk %}" style="display:inline;">
                                 {% csrf_token %}
                                 <button type="submit">Aceptar</button>
                             </form>

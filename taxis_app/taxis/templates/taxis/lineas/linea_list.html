@@ -3,24 +3,38 @@
 <h1>{{ titulo }}</h1>
 <p>{{ mensaje }}</p>
 
+{% if user.es_admin %}
+    <a href="{% url 'linea_create' %}" class="btn">Nueva línea</a>
+{% endif %}
+
 <table>
     <thead>
         <tr>
             <th>Nombre</th>
-            <th>Zona</th>
-            <th>Descripción</th>
+            <th>Zonas que cubre</th>
             <th>Taxis</th>
             <th>Creada</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         {% for linea in lineas %}
             <tr>
-                <td>{{ linea.nombre }}</td>
-                <td>{{ linea.zona|default:"—" }}</td>
-                <td>{{ linea.descripcion|default:"Sin descripción disponible." }}</td>
-                <td>{{ linea.taxis.count }}</td>
+                <td><a href="{{ linea.get_absolute_url }}">{{ linea.nombre }}</a></td>
+                <td>
+                    {% for zona in linea.zonas.all %}
+                        <a href="{{ zona.get_absolute_url }}">{{ zona.nombre }}</a>{% if not forloop.last %}, {% endif %}
+                    {% empty %}—{% endfor %}
+                </td>
+                <td>{{ linea.total_taxis }}</td>
                 <td>{{ linea.created_at|date:"d/m/Y" }}</td>
+                <td>
+                    <a href="{{ linea.get_absolute_url }}">Ver</a>
+                    {% if user.es_admin %}
+                        · <a href="{% url 'linea_update' linea.pk %}">Editar</a>
+                        · <a href="{% url 'linea_delete' linea.pk %}">Eliminar</a>
+                    {% endif %}
+                </td>
             </tr>
         {% empty %}
             <tr>

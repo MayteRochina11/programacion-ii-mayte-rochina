@@ -87,6 +87,11 @@
             padding: 15px 20px;
             margin: 15px 0;
         }
+        .campo input[type="checkbox"] { width: auto; margin-right: 6px; }
+        .campo ul { list-style: none; padding: 0; margin: 0; }
+        .btn-peligro { background-color: #c0392b; }
+        .btn-peligro:hover { background-color: #e74c3c; color: #fff; }
+        .detalle p { margin: 6px 0; }
         .sesion { float: right; font-weight: normal; }
         .sesion form { display: inline; }
         .sesion button { padding: 4px 12px; font-size: 0.9em; }
@@ -123,9 +128,10 @@
                     <a href="{% url 'panel_choferes' %}">Choferes</a>
                     <a href="{% url 'panel_pasajeros' %}">Pasajeros</a>
                     <a href="{% url 'panel_viajes' %}">Viajes</a>
-                    <a href="{% url 'linea_list' %}">Líneas</a>
-                    <a href="{% url 'linea_create' %}">Nueva línea</a>
                 {% endif %}
+                <a href="{% url 'taxi_list' %}">Flota</a>
+                <a href="{% url 'linea_list' %}">Líneas</a>
+                <a href="{% url 'zona_list' %}">Zonas</a>
                 <a href="{% url 'sobre_nosotros' %}">Sobre nosotros</a>
                 <span class="sesion">
                     {{ user.nombre_completo }} ({{ user.get_rol_display }})

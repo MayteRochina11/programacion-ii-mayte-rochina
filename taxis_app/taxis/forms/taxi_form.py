@@ -24,7 +24,7 @@ class TaxiForm(forms.ModelForm):
         }
         widgets = {
             "taxi_placa": forms.TextInput(),
-            "taxi_tarifa": forms.TextInput(),
+            "taxi_tarifa": forms.NumberInput(attrs={"step": "0.01", "min": "0"}),
         }
 
     def __init__(self, *args, **kwargs):

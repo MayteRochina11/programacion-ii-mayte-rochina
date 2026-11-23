@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
-from taxis.forms.usuario_form import LoginForm, RegistroChoferForm, RegistroPasajeroForm
+from taxis.forms.registro_form import LoginForm, RegistroChoferForm, RegistroPasajeroForm
 
 
 def ingresar(request):

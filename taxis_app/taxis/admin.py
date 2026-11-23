@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import AdminUserCreationForm, UserChangeForm
 
-from taxis.models import Linea, TaxisFast, Usuario, Viaje
+from taxis.models import Linea, TaxisFast, Usuario, Viaje, Zona
 
 
 class UsuarioCreationForm(AdminUserCreationForm):
@@ -32,10 +32,19 @@ class UsuarioAdmin(UserAdmin):
     )
 
 
+@admin.register(Zona)
+class ZonaAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "descripcion", "created_at")
+    list_filter = ("created_at",)
+    search_fields = ("nombre", "descripcion")
+
+
 @admin.register(Linea)
 class LineaAdmin(admin.ModelAdmin):
     list_display = ("nombre", "zona", "created_at")
+    list_filter = ("zonas",)
     search_fields = ("nombre", "zona")
+    filter_horizontal = ("zonas",)
 
 
 @admin.register(TaxisFast)

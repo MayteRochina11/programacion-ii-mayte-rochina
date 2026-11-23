@@ -11,6 +11,7 @@
             <th>Chofer</th>
             <th>Estado</th>
             <th>Pedido</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -22,9 +23,10 @@
                 <td>{{ viaje.chofer.nombre_completo|default:"—" }}</td>
                 <td><span class="badge {{ viaje.estado }}">{{ viaje.get_estado_display }}</span></td>
                 <td>{{ viaje.created_at|date:"d/m/Y H:i" }}</td>
+                <td><a href="{{ viaje.get_absolute_url }}">Ver</a></td>
             </tr>
         {% empty %}
-            <tr><td colspan="6">No hay viajes registrados aún.</td></tr>
+            <tr><td colspan="7">No hay viajes registrados aún.</td></tr>
         {% endfor %}
     </tbody>
 </table>
