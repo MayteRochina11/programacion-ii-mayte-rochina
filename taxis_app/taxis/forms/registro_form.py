@@ -22,11 +22,6 @@ class LoginForm(AuthenticationForm):
 
 
 class RegistroBaseForm(UserCreationForm):
-    """UserCreationForm extendido: pide también nombre, correo y teléfono.
-
-    El ROL lo fija cada subclase, nunca viene del formulario.
-    """
-
     rol = None
 
     class Meta:
@@ -64,8 +59,6 @@ class RegistroPasajeroForm(RegistroBaseForm):
 
 
 class RegistroChoferForm(RegistroBaseForm):
-    """Registra al chofer Y su taxi en un solo paso."""
-
     rol = Usuario.Rol.CHOFER
 
     taxi = forms.CharField(max_length=100, label="Nombre del taxi")

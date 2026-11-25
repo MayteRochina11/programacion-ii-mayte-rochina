@@ -1,0 +1,9 @@
+{% extends "taxis/base.html" %}
+{% block title %}Sin permiso{% endblock %}
+{% block content %}
+<h1>Acceso denegado</h1>
+<p>No tienes permiso para entrar a esta página o para hacer esta acción.</p>
+<p>Si crees que es un error, habla con el administrador.</p>
+
+<a href="{% url 'inicio' %}" class="btn">Volver a mi panel</a>
+{% endblock %}

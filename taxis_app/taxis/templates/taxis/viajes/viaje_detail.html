@@ -28,5 +28,11 @@
 
 <div class="acciones">
     <a href="{% url 'inicio' %}" class="btn">Volver</a>
+    {% if puede_modificar and perms.taxis.change_viaje %}
+        <a href="{% url 'viaje_update' viaje.pk %}" class="btn">Editar</a>
+    {% endif %}
+    {% if puede_modificar and perms.taxis.delete_viaje %}
+        <a href="{% url 'viaje_delete' viaje.pk %}" class="btn btn-peligro">Eliminar</a>
+    {% endif %}
 </div>
 {% endblock %}

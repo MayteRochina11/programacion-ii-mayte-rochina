@@ -12,15 +12,12 @@ class TaxisFast(models.Model):
         EN_SERVICIO = "EN_SERVICIO", "En servicio"
         FUERA_DE_SERVICIO = "FUERA_DE_SERVICIO", "Fuera de servicio"
 
-    # Cada taxi es de UN chofer y cada chofer tiene UN taxi (relación uno a uno).
     chofer = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="vehiculo",
         limit_choices_to={"rol": "CHOFER"},
     )
-    # ForeignKey: cada taxi pertenece a UNA línea; una línea tiene MUCHOS taxis.
-    # SET_NULL: si se borra la línea, el taxi no desaparece (queda sin línea).
     linea = models.ForeignKey(
         Linea,
         on_delete=models.SET_NULL,
@@ -31,7 +28,6 @@ class TaxisFast(models.Model):
     taxi = models.CharField(max_length=100)
     taxi_placa = models.TextField(blank=True)
     taxi_fecha = models.DateTimeField(auto_now_add=True)
-    # Dinero: DecimalField (nunca FloatField, que acumula errores de redondeo).
     taxi_tarifa = models.DecimalField(
         max_digits=6,
         decimal_places=2,

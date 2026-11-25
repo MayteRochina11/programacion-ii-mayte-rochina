@@ -1,12 +1,12 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404, render
 
 from taxis.models import TaxisFast, Viaje
 
 
 @login_required
+@permission_required("taxis.view_taxisfast", raise_exception=True)
 def taxi_list(request):
-    """La flota: todos los taxis con su chofer, línea y estado."""
     contexto = {
         "titulo": "Flota",
         "mensaje": "Los taxis de TaxisFast.",
@@ -16,13 +16,13 @@ def taxi_list(request):
 
 
 @login_required
+@permission_required("taxis.view_taxisfast", raise_exception=True)
 def taxi_detail(request, pk):
     taxi = get_object_or_404(TaxisFast.objects.select_related("chofer", "linea"), pk=pk)
     es_dueno = taxi.chofer_id == request.user.pk
     viajes = Viaje.objects.none()
-    # El historial de carreras solo lo ven el dueño del taxi y el administrador.
     if es_dueno or request.user.es_admin:
-        viajes = taxi.viajes.select_related("pasajero")[:10]
+        viajes = taxi.viajes.select_related("creado_por")[:10]
     return render(request, "taxis/flota/taxi_detail.html", {
         "taxi": taxi,
         "es_dueno": es_dueno,

@@ -32,9 +32,7 @@
 
 <div class="acciones">
     <a href="{% url 'linea_list' %}" class="btn">Volver a líneas</a>
-    {% if user.es_admin %}
-        <a href="{% url 'linea_update' linea.pk %}" class="btn">Editar</a>
-        <a href="{% url 'linea_delete' linea.pk %}" class="btn btn-peligro">Eliminar</a>
-    {% endif %}
+    {% if perms.taxis.change_linea %}<a href="{% url 'linea_update' linea.pk %}" class="btn">Editar</a>{% endif %}
+    {% if perms.taxis.delete_linea %}<a href="{% url 'linea_delete' linea.pk %}" class="btn btn-peligro">Eliminar</a>{% endif %}
 </div>
 {% endblock %}

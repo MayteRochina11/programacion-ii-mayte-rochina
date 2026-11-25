@@ -1,13 +1,19 @@
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, Group, UserManager
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 
 
+GRUPO_POR_ROL = {
+    "PASAJERO": "pasajeros",
+    "CHOFER": "choferes",
+    "ADMIN": "administradores",
+}
+
+
 class UsuarioManager(UserManager):
     def create_superuser(self, username, email=None, password=None, **extra_fields):
-        # Lo que se crea con "createsuperuser" es siempre EL administrador.
         if self.filter(rol=Usuario.Rol.ADMIN).exists():
             raise ValidationError("Ya existe un administrador. Solo puede haber uno.")
         extra_fields["rol"] = Usuario.Rol.ADMIN
@@ -15,8 +21,6 @@ class UsuarioManager(UserManager):
 
 
 class Usuario(AbstractUser):
-    """Usuario con contraseña (la encripta Django) y un rol: pasajero, chofer o admin."""
-
     class Rol(models.TextChoices):
         PASAJERO = "PASAJERO", "Pasajero"
         CHOFER = "CHOFER", "Chofer"
@@ -32,7 +36,6 @@ class Usuario(AbstractUser):
         verbose_name_plural = "usuarios"
         ordering = ["username"]
         constraints = [
-            # Solo puede existir UN usuario con rol ADMIN (lo garantiza la base de datos).
             models.UniqueConstraint(
                 fields=["rol"],
                 condition=Q(rol="ADMIN"),
@@ -40,6 +43,17 @@ class Usuario(AbstractUser):
                 violation_error_message="Ya existe un administrador. Solo puede haber uno.",
             ),
         ]
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.sincronizar_grupo()
+
+    def sincronizar_grupo(self):
+        destino = GRUPO_POR_ROL[self.rol]
+        grupos = {g.name: g for g in Group.objects.filter(name__in=GRUPO_POR_ROL.values())}
+        self.groups.remove(*[g for nombre, g in grupos.items() if nombre != destino])
+        if destino in grupos:
+            self.groups.add(grupos[destino])
 
     @property
     def es_admin(self):
@@ -58,7 +72,6 @@ class Usuario(AbstractUser):
         return self.get_full_name() or self.username
 
     def get_absolute_url(self):
-        # "inicio" lleva a cada usuario a su propio panel según su rol.
         return reverse("inicio")
 
     def __str__(self):

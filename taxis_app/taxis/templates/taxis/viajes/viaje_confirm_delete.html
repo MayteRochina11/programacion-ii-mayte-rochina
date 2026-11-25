@@ -1,0 +1,16 @@
+{% extends "taxis/base.html" %}
+{% block title %}Eliminar carrera{% endblock %}
+{% block content %}
+<h1>Eliminar carrera</h1>
+
+<p>¿Seguro que quieres eliminar la carrera <strong>{{ viaje.origen }} → {{ viaje.destino }}</strong>?</p>
+{% if viaje.estado == "ASIGNADO" %}
+    <p>La carrera está en curso: el taxi asignado quedará libre.</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn-peligro">Sí, eliminar</button>
+    <a href="{{ cancelar_url }}">Cancelar</a>
+</form>
+{% endblock %}

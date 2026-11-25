@@ -8,7 +8,6 @@ class Linea(models.Model):
     nombre = models.CharField(max_length=100)
     zona = models.CharField(max_length=100, blank=True)
     descripcion = models.TextField(blank=True, null=True)
-    # ManyToMany: una línea cubre VARIAS zonas y una zona la cubren VARIAS líneas.
     zonas = models.ManyToManyField(Zona, blank=True, related_name="lineas")
     created_at = models.DateTimeField(auto_now_add=True)
 

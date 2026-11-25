@@ -5,11 +5,6 @@ from django.db import migrations, models
 
 
 def copiar_tarifa_a_decimal(apps, schema_editor):
-    """Convierte la tarifa de texto (por ejemplo "1,50" o "2.00") al campo numérico.
-
-    Lo que no se pueda convertir ("abc", vacío, negativo) queda sin tarifa (NULL)
-    en vez de romper la migración.
-    """
     TaxisFast = apps.get_model("taxis", "TaxisFast")
     for taxi in TaxisFast.objects.all():
         texto = (taxi.taxi_tarifa or "").strip().replace(",", ".")
@@ -24,7 +19,6 @@ def copiar_tarifa_a_decimal(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('taxis', '0001_initial'),
     ]
@@ -61,7 +55,6 @@ class Migration(migrations.Migration):
             name='zonas',
             field=models.ManyToManyField(blank=True, related_name='lineas', to='taxis.zona'),
         ),
-        # --- tarifa: de texto a DecimalField, conservando los datos existentes ---
         migrations.AddField(
             model_name='taxisfast',
             name='taxi_tarifa_nueva',

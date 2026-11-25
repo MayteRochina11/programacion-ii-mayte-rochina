@@ -39,7 +39,7 @@
 
 <div class="acciones">
     <a href="{% url 'taxi_list' %}" class="btn">Volver a la flota</a>
-    {% if es_dueno %}
+    {% if es_dueno and perms.taxis.change_taxisfast %}
         <a href="{% url 'chofer_taxi_edit' %}" class="btn">Editar mi taxi</a>
     {% endif %}
 </div>

@@ -1,15 +1,13 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Count, Q
 from django.shortcuts import render
 
-from taxis.decorators import rol_requerido
 from taxis.models import Linea, TaxisFast, Usuario, Viaje, Zona
 
 
 @login_required
-@rol_requerido(Usuario.Rol.ADMIN)
+@permission_required("taxis.view_usuario", raise_exception=True)
 def panel_admin(request):
-    """Resumen general para el administrador."""
     contexto = {
         "titulo": "Panel del administrador",
         "total_choferes": Usuario.objects.filter(rol=Usuario.Rol.CHOFER).count(),
@@ -27,7 +25,7 @@ def panel_admin(request):
 
 
 @login_required
-@rol_requerido(Usuario.Rol.ADMIN)
+@permission_required("taxis.view_usuario", raise_exception=True)
 def panel_choferes(request):
     choferes = (
         Usuario.objects.filter(rol=Usuario.Rol.CHOFER)
@@ -47,7 +45,7 @@ def panel_choferes(request):
 
 
 @login_required
-@rol_requerido(Usuario.Rol.ADMIN)
+@permission_required("taxis.view_usuario", raise_exception=True)
 def panel_pasajeros(request):
     pasajeros = (
         Usuario.objects.filter(rol=Usuario.Rol.PASAJERO)
@@ -61,9 +59,9 @@ def panel_pasajeros(request):
 
 
 @login_required
-@rol_requerido(Usuario.Rol.ADMIN)
+@permission_required("taxis.view_usuario", raise_exception=True)
 def panel_viajes(request):
     return render(request, "taxis/panel/panel_viajes.html", {
         "titulo": "Todos los viajes",
-        "viajes": Viaje.objects.select_related("pasajero", "taxi__chofer"),
+        "viajes": Viaje.objects.select_related("creado_por", "taxi__chofer"),
     })

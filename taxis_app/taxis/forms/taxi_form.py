@@ -4,8 +4,6 @@ from taxis.models import Linea, TaxisFast
 
 
 class TaxiForm(forms.ModelForm):
-    """El chofer edita SU taxi: línea y datos. El estado se cambia con el botón del panel."""
-
     linea = forms.ModelChoiceField(
         queryset=Linea.objects.order_by("nombre"),
         label="Línea",

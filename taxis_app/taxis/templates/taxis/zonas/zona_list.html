@@ -3,7 +3,7 @@
 <h1>{{ titulo }}</h1>
 <p>{{ mensaje }}</p>
 
-{% if user.es_admin %}
+{% if perms.taxis.add_zona %}
     <a href="{% url 'zona_create' %}" class="btn">Nueva zona</a>
 {% endif %}
 
@@ -24,10 +24,8 @@
                 <td>{{ zona.total_lineas }}</td>
                 <td>
                     <a href="{{ zona.get_absolute_url }}">Ver</a>
-                    {% if user.es_admin %}
-                        · <a href="{% url 'zona_update' zona.pk %}">Editar</a>
-                        · <a href="{% url 'zona_delete' zona.pk %}">Eliminar</a>
-                    {% endif %}
+                    {% if perms.taxis.change_zona %}· <a href="{% url 'zona_update' zona.pk %}">Editar</a>{% endif %}
+                    {% if perms.taxis.delete_zona %}· <a href="{% url 'zona_delete' zona.pk %}">Eliminar</a>{% endif %}
                 </td>
             </tr>
         {% empty %}

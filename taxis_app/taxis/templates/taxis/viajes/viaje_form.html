@@ -8,6 +8,6 @@
     {% include "taxis/includes/form_campos.html" %}
 
     <button type="submit">Guardar</button>
-    <a href="{% url 'viaje_list' %}">Cancelar</a>
+    <a href="{% url cancelar_url|default:'viaje_list' %}">Cancelar</a>
 </form>
 {% endblock %}

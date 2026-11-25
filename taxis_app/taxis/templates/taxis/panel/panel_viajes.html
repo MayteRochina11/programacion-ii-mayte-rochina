@@ -23,7 +23,11 @@
                 <td>{{ viaje.chofer.nombre_completo|default:"—" }}</td>
                 <td><span class="badge {{ viaje.estado }}">{{ viaje.get_estado_display }}</span></td>
                 <td>{{ viaje.created_at|date:"d/m/Y H:i" }}</td>
-                <td><a href="{{ viaje.get_absolute_url }}">Ver</a></td>
+                <td>
+                    <a href="{{ viaje.get_absolute_url }}">Ver</a>
+                    {% if perms.taxis.change_viaje %}· <a href="{% url 'viaje_update' viaje.pk %}">Editar</a>{% endif %}
+                    {% if perms.taxis.delete_viaje %}· <a href="{% url 'viaje_delete' viaje.pk %}">Eliminar</a>{% endif %}
+                </td>
             </tr>
         {% empty %}
             <tr><td colspan="7">No hay viajes registrados aún.</td></tr>

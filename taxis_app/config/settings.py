@@ -1,9 +1,3 @@
-"""
-Django settings for config project (TaxisFast).
-
-Misma estructura que biblioteca-app: proyecto "config" + app "taxis".
-"""
-
 from pathlib import Path
 import os
 import sys
@@ -17,13 +11,10 @@ SECRET_KEY = os.getenv(
     'django-insecure-q*i*qj&8-n2c!=6zq_)+m&gfr)d7lte4r6v22%vce)l%7a$d6q',
 )
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -35,7 +26,6 @@ INSTALLED_APPS = [
     'taxis',
 ]
 
-# Usuario propio (con rol). Debe definirse ANTES de la primera migración.
 AUTH_USER_MODEL = 'taxis.Usuario'
 
 LOGIN_URL = 'ingresar'
@@ -72,7 +62,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-#
 if os.getenv('DB_NAME'):
     DATABASES = {
         'default': {
@@ -93,8 +82,6 @@ else:
     }
 
 
-# Password validation
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -111,8 +98,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-
 LANGUAGE_CODE = 'es-es'
 
 TIME_ZONE = 'America/Guayaquil'
@@ -122,11 +107,10 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 if 'test' in sys.argv:
     PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']

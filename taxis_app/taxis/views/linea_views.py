@@ -1,16 +1,15 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
 
-from taxis.decorators import rol_requerido
 from taxis.forms.linea_form import LineaForm
-from taxis.models import Linea, Usuario
+from taxis.models import Linea
 
 
 @login_required
+@permission_required("taxis.view_linea", raise_exception=True)
 def linea_list(request):
-    """Listado de líneas de taxi (lo ven todos los usuarios con sesión)."""
     contexto = {
         "titulo": "Líneas",
         "mensaje": "Las líneas agrupan los taxis y cubren una o varias zonas.",
@@ -20,6 +19,7 @@ def linea_list(request):
 
 
 @login_required
+@permission_required("taxis.view_linea", raise_exception=True)
 def linea_detail(request, pk):
     linea = get_object_or_404(Linea.objects.prefetch_related("zonas"), pk=pk)
     return render(request, "taxis/lineas/linea_detail.html", {
@@ -29,7 +29,7 @@ def linea_detail(request, pk):
 
 
 @login_required
-@rol_requerido(Usuario.Rol.ADMIN)
+@permission_required("taxis.add_linea", raise_exception=True)
 def linea_create(request):
     if request.method == "POST":
         form = LineaForm(request.POST)
@@ -46,7 +46,7 @@ def linea_create(request):
 
 
 @login_required
-@rol_requerido(Usuario.Rol.ADMIN)
+@permission_required("taxis.change_linea", raise_exception=True)
 def linea_update(request, pk):
     linea = get_object_or_404(Linea, pk=pk)
     if request.method == "POST":
@@ -64,9 +64,8 @@ def linea_update(request, pk):
 
 
 @login_required
-@rol_requerido(Usuario.Rol.ADMIN)
+@permission_required("taxis.delete_linea", raise_exception=True)
 def linea_delete(request, pk):
-    """GET muestra la confirmación; solo POST elimina."""
     linea = get_object_or_404(Linea, pk=pk)
     if request.method == "POST":
         linea.delete()
