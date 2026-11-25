@@ -56,6 +56,6 @@ class TaxisAdmin(admin.ModelAdmin):
 
 @admin.register(Viaje)
 class ViajeAdmin(admin.ModelAdmin):
-    list_display = ("pasajero", "origen", "destino", "taxi", "estado", "created_at")
+    list_display = ("creado_por", "origen", "destino", "taxi", "estado", "created_at")
     list_filter = ("estado",)
-    search_fields = ("pasajero__username", "pasajero__first_name", "origen", "destino")
+    search_fields = ("creado_por__username", "creado_por__first_name", "origen", "destino")

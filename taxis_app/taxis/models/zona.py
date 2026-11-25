@@ -3,8 +3,6 @@ from django.urls import reverse
 
 
 class Zona(models.Model):
-    """Sector o barrio de la ciudad. Una línea cubre varias zonas y una zona la cubren varias líneas."""
-
     nombre = models.CharField(max_length=100, unique=True)
     descripcion = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

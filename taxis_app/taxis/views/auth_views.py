@@ -14,7 +14,6 @@ def ingresar(request):
     form = LoginForm(request, data=request.POST or None)
     if request.method == "POST" and form.is_valid():
         login(request, form.get_user())
-        # Si venía de una página protegida, vuelve a ella (solo si es de este sitio).
         siguiente = request.GET.get("next", "")
         if url_has_allowed_host_and_scheme(
             siguiente, allowed_hosts={request.get_host()}, require_https=request.is_secure()

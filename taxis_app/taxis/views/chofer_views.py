@@ -1,18 +1,18 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from taxis.decorators import rol_requerido
 from taxis.forms.taxi_form import TaxiForm
-from taxis.models import TaxisFast, Usuario, Viaje
+from taxis.models import TaxisFast, Viaje
 
 
 @login_required
-@rol_requerido(Usuario.Rol.CHOFER)
+@permission_required("taxis.aceptar_viaje", raise_exception=True)
 def chofer_panel(request):
-    """Panel del chofer: su taxi, su carrera en curso y las carreras que puede aceptar."""
+    if request.user.es_admin:
+        return redirect("panel_admin")
     taxi = TaxisFast.objects.select_related("linea").filter(chofer=request.user).first()
 
     viaje_actual = None
@@ -20,10 +20,9 @@ def chofer_panel(request):
     historial = Viaje.objects.none()
 
     if taxi:
-        viajes = Viaje.objects.select_related("pasajero")
+        viajes = Viaje.objects.select_related("creado_por")
         viaje_actual = viajes.filter(taxi=taxi, estado=Viaje.Estado.ASIGNADO).first()
         if taxi.estado == TaxisFast.Estado.EN_BASE:
-            # Las más antiguas primero: llevan más tiempo esperando.
             disponibles = viajes.filter(estado=Viaje.Estado.PENDIENTE).order_by("created_at")
         historial = viajes.filter(taxi=taxi, estado=Viaje.Estado.COMPLETADO)[:10]
 
@@ -37,10 +36,9 @@ def chofer_panel(request):
 
 
 @login_required
-@rol_requerido(Usuario.Rol.CHOFER)
+@permission_required("taxis.change_taxisfast", raise_exception=True)
 @require_POST
 def chofer_disponibilidad(request):
-    """Alterna entre 'En la base' (disponible) y 'Fuera de servicio'."""
     get_object_or_404(TaxisFast, chofer=request.user)
     with transaction.atomic():
         taxi = TaxisFast.objects.select_for_update().get(chofer=request.user)
@@ -58,9 +56,8 @@ def chofer_disponibilidad(request):
 
 
 @login_required
-@rol_requerido(Usuario.Rol.CHOFER)
+@permission_required("taxis.change_taxisfast", raise_exception=True)
 def chofer_taxi_edit(request):
-    """El chofer cambia su línea y los datos de SU taxi (nunca el de otro)."""
     taxi = get_object_or_404(TaxisFast, chofer=request.user)
     if request.method == "POST":
         form = TaxiForm(request.POST, instance=taxi)
