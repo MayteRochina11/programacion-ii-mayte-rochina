@@ -71,9 +71,7 @@ python manage.py runserver
 
 Abre <http://127.0.0.1:8000/>.
 
-**Base de datos:** sin configurar nada usa **SQLite** (no hace falta instalar nada).
-Para usar **PostgreSQL**, copia `.env.example` a `.env` y completa `DB_NAME`, `DB_USER`,
-`DB_PASSWORD`, `DB_HOST` y `DB_PORT`; después corre los mismos comandos.
+
 
 ## Datos de prueba
 
@@ -106,12 +104,6 @@ Los grupos se crean **por código** (`taxis/grupos.py`): solos al correr `migrat
 - Las vistas se protegen con `@login_required` + `@permission_required`. Sin sesión → login; sin permiso → página **403**.
 - Los botones se ocultan en las plantillas con `{% if perms.taxis.xxx %}`, pero además la vista valida el permiso.
 - **Regla de propiedad:** un pasajero edita o elimina una carrera solo si la creó (`creado_por`) y sigue pendiente. Otro pasajero del mismo grupo recibe 403.
-
-## Pruebas
-
-```bash
-python manage.py test
-```
 
 ## Estilos
 
